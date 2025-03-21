@@ -1,4 +1,4 @@
-import {CartState} from '../type/CartsType';
+import {CartState} from '../type/CartType';
 
 export const tempProductDefaultValue = {
   imageUrl: "",

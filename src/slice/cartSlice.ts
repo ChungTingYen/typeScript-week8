@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { cartDefaultValue } from '../data/defaultValue';
-import { CartState } from '../type/CartsType';
+import { CartState } from '../type/CartType';
 export const cartSlice = createSlice({
   name:'cartSlice',
   initialState:cartDefaultValue as CartState,

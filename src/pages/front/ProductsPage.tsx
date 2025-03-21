@@ -1,34 +1,44 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { apiService } from "../../apiService/apiService";
-import { Product, LoadingOverlay, Pagination } from "../../component/front";
+//等一下做
+// import { Product, LoadingOverlay, Pagination } from "../../component/front";
+import { Product, LoadingOverlay } from "../../component/front";
+import { Product as ProductType} from "../../type/ProductType"
+import { Pagination as PaginationType} from "../../type/PaginationType"
+
+interface ApiResponse {
+  products: ProductType[];
+  pagination: PaginationType;
+  [key: string]: any; // 允許其他未知屬性
+}
+
 const APIPath = import.meta.env.VITE_API_PATH;
-
 export default function ProductsPage() {
-  const [toggle, setToggle] = useState([{ id: 1, toggle: true },{ id: 2, toggle: true }]);
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [pageInfo, setPageInfo] = useState({});
-  const [category, setCategory] = useState(["全部"]);
-  const [selectedCategory, setSelectedCategory] = useState("全部");
-  const [wishList, setWishList] = useState([]);
-
+  const [toggle, setToggle] = 
+  useState<{id:number,toggle:boolean}[]>([{ id: 1, toggle: true },{ id: 2, toggle: true }]);
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [pageInfo, setPageInfo] = useState<PaginationType | null>(null);
+  const [category, setCategory] = useState<string[]>(["全部"]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("全部");
+  const [wishList, setWishList] = useState<string[]>([]);
   const getWishList = () => {
-    const wishListStorage = JSON.parse(localStorage.getItem("wishList")) || {};
+    //JSON預設只接受字串，所以但未使用ts的時候不會強制報錯
+    const wishListStorage = JSON.parse(localStorage.getItem("wishList")||'{}') || {};
     setWishList(Object.keys(wishListStorage));
   };
 
   const getProducts = useCallback(async (page = 1) => {
     setIsLoading(true);
     try {
+      const params = {
+        page: page,
+        category: selectedCategory === "全部" ? "" : selectedCategory,
+      };
       const {
         data: { products, pagination, },
-      } = await apiService.axiosGetByConfig(`/api/${APIPath}/products`, {
-        params: {
-          page: page,
-          category: selectedCategory === "全部" ? "" : selectedCategory,
-        },
-      });
+      }:{data:ApiResponse} = await apiService.axiosGetByConfig(`/api/${APIPath}/products`,  { params });
       setProducts(products);
       setPageInfo(pagination);
     } catch (error) {
@@ -38,7 +48,7 @@ export default function ProductsPage() {
     }
   },[selectedCategory]);
   
-  const handleSelectedCategory = (category) => {
+  const handleSelectedCategory = (category:string) => {
     setSelectedCategory(category);
   };
   const scroll = () => {
@@ -56,9 +66,7 @@ export default function ProductsPage() {
     fetchData();
   }, [getProducts]);
 
-  // useEffect(() => console.log("wishList:", wishList));
-
-  const handleToggle = (id) => {
+  const handleToggle = (id:number):void => {
     // 找到目標對象
     const targetIndex = toggle.findIndex((item) => item.id === id);
     if (targetIndex !== -1) {
@@ -76,7 +84,7 @@ export default function ProductsPage() {
     try {
       const {
         data: { products, },
-      } = await apiService.axiosGet(`/api/${APIPath}/products/all`);
+      }:{data:ApiResponse} = await apiService.axiosGet(`/api/${APIPath}/products/all`);
       const category = [
         "全部",
         ...new Set(products.map((item) => item.category)),
@@ -171,7 +179,7 @@ export default function ProductsPage() {
                 ))}
               </div>
               <nav className="d-flex justify-content-center">
-                <Pagination getData={getProducts} pageInfo={pageInfo} />
+                {/* <Pagination getData={getProducts} pageInfo={pageInfo} /> */}
               </nav>
             </div>
           </div>

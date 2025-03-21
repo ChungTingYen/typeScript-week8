@@ -3,9 +3,8 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route } from "../../type/HeaderType";
 import { cartData } from "../../slice/cartSlice";
-
-// import { getCartSign } from "../../utils/utils";
-
+import { getCartSign } from "../../utils/utils";
+// import { ActionTypes } from "../../type/ActionTypes";
 export default function Header() {
   const routes:Route[] = [
     { path: "/products", name: "產品列表", id: "products" },
@@ -16,14 +15,16 @@ export default function Header() {
     // { path: "/loginBackend", name: "登入後台", id: "loginBackend" },
   ];
   const {carts} = useSelector(cartData);
+  //另一個寫法
+  // const cartContent = useSelector((state:ActionTypes) => state.cartAtStore);
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const handleToggleNavbar:()=>void = () => {
     setIsToggle((prev) => !prev);
   };
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   getCartSign(dispatch);
-  // }, [dispatch]);
+  useEffect(() => {
+    getCartSign(dispatch);
+  }, [dispatch]);
   // 不使用原生的collapse就要用下方判斷，不然會有navbar消失的可能性
   useEffect(() => {
     const handleResize:()=>void = () => {
