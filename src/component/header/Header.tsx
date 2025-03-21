@@ -1,9 +1,11 @@
 import {  NavLink } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { getCartSign } from "../../utils/utils";
 import { Route } from "../../type/HeaderType";
-import { CartState } from "../../store";
+import { cartData } from "../../slice/cartSlice";
+
+// import { getCartSign } from "../../utils/utils";
+
 export default function Header() {
   const routes:Route[] = [
     { path: "/products", name: "產品列表", id: "products" },
@@ -13,15 +15,15 @@ export default function Header() {
     // { path: "/orderList", name: "訂單清單", id: "orderList" },
     // { path: "/loginBackend", name: "登入後台", id: "loginBackend" },
   ];
-  const cartContent = useSelector((state:CartState) => state.cartAtStore);
-  const dispatch = useDispatch();
+  const {carts} = useSelector(cartData);
   const [isToggle, setIsToggle] = useState<boolean>(true);
   const handleToggleNavbar:()=>void = () => {
     setIsToggle((prev) => !prev);
   };
-  useEffect(() => {
-    // getCartSign(dispatch);
-  }, [dispatch]);
+  const dispatch = useDispatch();
+  // useEffect(() => {
+  //   getCartSign(dispatch);
+  // }, [dispatch]);
   // 不使用原生的collapse就要用下方判斷，不然會有navbar消失的可能性
   useEffect(() => {
     const handleResize:()=>void = () => {
@@ -76,7 +78,7 @@ export default function Header() {
                           left: "12px",
                         }}
                       >
-                        {cartContent.carts?.length}
+                        {carts?.length}
                       </span>
                     </div>
                   ) : (

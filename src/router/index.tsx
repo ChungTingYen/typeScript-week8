@@ -1,10 +1,13 @@
 import {createHashRouter} from 'react-router'
 import FrontLayout from '../layouts/FrontLayout'
-
+import {HomePage} from '../pages/front'
 const routes = [
     {
         path: "/",
-        element:<FrontLayout />
+        element:<FrontLayout />,
+        children: [
+            { index:true, element: <HomePage /> },
+        ]
     }
 ];
 
