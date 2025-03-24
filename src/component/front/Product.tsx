@@ -4,6 +4,7 @@ import { apiService } from "../../apiService/apiService";
 const APIPath = import.meta.env.VITE_API_PATH;
 //接續做
 // import { useNavigatePage, useToast, useGetCart } from "../../hook";
+import { useNavigatePage, useGetCart,useToast } from "../../hook";
 import { useEffect, useState, memo } from "react";
 import { updateCartSlice } from "../../slice/cartSlice";
 import { Product as ProductType} from "../../type/ProductType"
@@ -16,9 +17,9 @@ interface ProductComponent {
 const Product: React.FC<ProductComponent> = (props)=> {
   const { product, setIsLoading, wishList, setWishList } = props;
   const [isShowHart, setIsShowHart] = useState<boolean>(false);
-  // const navigate = useNavigatePage();
-  // const updateToastInfo = useToast();
-  // const updateCartSign = useGetCart(updateCartSlice);
+  const navigate = useNavigatePage();
+  const updateToastInfo = useToast();
+  const updateCartSign = useGetCart(updateCartSlice);
   const handleAddProductToCart = async () => {
     setIsLoading(true);
     try {
@@ -29,11 +30,11 @@ const Product: React.FC<ProductComponent> = (props)=> {
         },
       };
       await apiService.axiosPost(`/api/${APIPath}/cart`, postData);
-      // updateToastInfo("你的裝備已加入購物車", "secondary", true);
-      // await updateCartSign();
+      updateToastInfo("你的裝備已加入購物車", "secondary", true);
+      await updateCartSign();
     } catch (error) {
       console.log(error);
-      // updateToastInfo(`加入失敗:${error}`, "danger", true);
+      updateToastInfo(`加入失敗:${error}`, "danger", true);
     } finally {
       setIsLoading(false);
     }
@@ -45,14 +46,14 @@ const Product: React.FC<ProductComponent> = (props)=> {
     if (!wishListStorage[productId]) {
       const newWishList = { ...wishListStorage, [productId]: true };
       localStorage.setItem("wishList", JSON.stringify(newWishList));
-      // updateToastInfo("已加入心願清單", "success", true);
+      updateToastInfo("已加入心願清單", "success", true);
       setIsShowHart(true);
     } else {
       const newWishList = { ...wishListStorage };
       delete newWishList[productId];
       localStorage.setItem("wishList", JSON.stringify(newWishList));
       setIsShowHart(false);
-      // updateToastInfo("已從心願清單移除", "success", true);
+      updateToastInfo("已從心願清單移除", "success", true);
       setWishList((prev) =>
         prev.filter((item) => {
           return item.includes(newWishList);
@@ -101,7 +102,7 @@ const Product: React.FC<ProductComponent> = (props)=> {
             src={product.imageUrl}
             className="card-img-top rounded-0"
             alt={product.title}
-            // onClick={() => navigate(`/product/${product.id}`)}
+            onClick={() => navigate(`/product/${product.id}`)}
             style={{
               width: "100%",
               height: "100%",

@@ -6,13 +6,15 @@ import { apiService } from "../../apiService/apiService";
 import { Product, LoadingOverlay } from "../../component/front";
 import { Product as ProductType} from "../../type/ProductType"
 import { Pagination as PaginationType} from "../../type/PaginationType"
+// import { useDispatch, useSelector } from "react-redux";
+// import { getWishList,wishListData } from '../../slice/wishListSlice'
 
 interface ApiResponse {
   products: ProductType[];
   pagination: PaginationType;
   [key: string]: any; // 允許其他未知屬性
 }
-
+// type WishListState = Record<string, boolean>;
 const APIPath = import.meta.env.VITE_API_PATH;
 export default function ProductsPage() {
   const [toggle, setToggle] = 
@@ -23,10 +25,12 @@ export default function ProductsPage() {
   const [category, setCategory] = useState<string[]>(["全部"]);
   const [selectedCategory, setSelectedCategory] = useState<string>("全部");
   const [wishList, setWishList] = useState<string[]>([]);
+  // const dispatch = useDispatch();
+
   const getWishList = () => {
     //JSON預設只接受字串，所以但未使用ts的時候不會強制報錯
-    const wishListStorage = JSON.parse(localStorage.getItem("wishList")||'{}') || {};
-    setWishList(Object.keys(wishListStorage));
+    const wishListStorage = JSON.parse(localStorage.getItem("wishList") || "{}") || {};
+    setWishList(Object.keys(wishListStorage)); // 更新組件狀態
   };
 
   const getProducts = useCallback(async (page = 1) => {
@@ -65,7 +69,7 @@ export default function ProductsPage() {
     };
     fetchData();
   }, [getProducts]);
-
+// useEffect(()=>{console.log('wishList:',wishList)})
   const handleToggle = (id:number):void => {
     // 找到目標對象
     const targetIndex = toggle.findIndex((item) => item.id === id);

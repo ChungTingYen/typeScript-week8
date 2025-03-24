@@ -1,4 +1,5 @@
 import {CartState} from '../type/CartType';
+import {ToastSliceType} from '../type/ToastType';
 
 export const tempProductDefaultValue = {
   imageUrl: "",
@@ -44,15 +45,26 @@ export const orderDefaultValue =
 //     isShowToast: false,
 //   }
 // };
-export const toastSliceDefaultValue = {
+// export const toastSliceDefaultValue = {
+//   toastInfo:[
+//     {
+//     id:0,
+//     text: '',
+//     type: '',
+//     isShowToast: false, 
+//     }
+//   ]
+// };
+export const toastSliceDefaultValue:ToastSliceType = {
   toastInfo:[
     // {
-    // id:new Date(),
-    // text: '測試',
-    // type: 'success',
-    // isShowToast: false, 
-    // }
-  ]
+    //   id: 0,
+    //   text: '',
+    //   type: '',
+    //   isShowToast: false,
+    // },
+    //不給初值，因為會導致一載入就出現
+  ],
 };
 export const flashModalDefaultValue = {
   flashModalInfo:{
