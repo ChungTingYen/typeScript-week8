@@ -7,8 +7,8 @@ const wishListSlice = createSlice({
   initialState,
   reducers:{
     getWishList(state,){
-      const wishListStorage = JSON.parse(localStorage.getItem("wishList")||'{}') || {};
-      return { ...wishListStorage };
+      return JSON.parse(localStorage.getItem("wishList")||'{}') || {};
+      // return { ...wishListStorage };
     }
   } 
 });

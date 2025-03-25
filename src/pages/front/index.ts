@@ -9,4 +9,4 @@ export { default as ProductsPage } from './ProductsPage';
 // export { default as CheckoutFormPage } from './CheckoutFormPage';
 // export { default as OrderListsPage } from './OrderListsPage';
 // export { default as CheckoutPaymentPageFromOrders } from './CheckoutPaymentPageFromOrders';
-// export { default as ProductsPageFromWishList } from './ProductsPageFromWishList';
+export { default as ProductsPageFromWishList } from './ProductsPageFromWishList';

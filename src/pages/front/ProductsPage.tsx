@@ -27,7 +27,7 @@ export default function ProductsPage() {
   const [wishList, setWishList] = useState<string[]>([]);
   const getWishList = () => {
     //JSON預設只接受字串，所以但未使用ts的時候不會強制報錯
-    const wishListStorage = JSON.parse(localStorage.getItem("wishList") || "{}") || {};
+    const wishListStorage:Record<string,boolean> = JSON.parse(localStorage.getItem("wishList") || "{}") || {};
     setWishList(Object.keys(wishListStorage)); // 更新組件狀態
   };
 
@@ -49,7 +49,6 @@ export default function ProductsPage() {
       setIsLoading(false);
     }
   },[selectedCategory]);
-  
   const handleSelectedCategory = (category:string) => {
     setSelectedCategory(category);
   };
@@ -119,7 +118,7 @@ export default function ProductsPage() {
         </div>
         <div className="container mt-md-1 mt-1 mb-1">
           <div className="row">
-            <div className="col-md-4">
+            <div className="col-md-3">
               <div
                 className="accordion border border-bottom border-top-0 border-start-0 border-end-0 mb-3"
                 id="accordionExample"
@@ -167,7 +166,7 @@ export default function ProductsPage() {
                 </div>
               </div>
             </div>
-            <div className="col-md-8">
+            <div className="col-md-9">
               <div className="row">
                 {products.map((product) => (
                   <Product

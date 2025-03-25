@@ -1,16 +1,15 @@
 
 import { Link } from "react-router-dom";
 import { apiService } from "../../apiService/apiService";
-const APIPath = import.meta.env.VITE_API_PATH;
-//接續做
-// import { useNavigatePage, useToast, useGetCart } from "../../hook";
 import { useNavigatePage, useGetCart,useToast } from "../../hook";
 import { useEffect, useState, memo } from "react";
 import { updateCartSlice } from "../../slice/cartSlice";
 import { Product as ProductType} from "../../type/ProductType"
+const APIPath = import.meta.env.VITE_API_PATH;
 interface ProductComponent {
   product:ProductType,
-  setIsLoading:React.Dispatch<React.SetStateAction<boolean>>;  
+  // setIsLoading:React.Dispatch<React.SetStateAction<boolean>>;  
+  setIsLoading:(isLoading: boolean)=>void;  
   wishList:string[], 
   setWishList: React.Dispatch<React.SetStateAction<string[]>>; 
 }
@@ -41,7 +40,6 @@ const Product: React.FC<ProductComponent> = (props)=> {
   };
   const handleWishList = (e:React.MouseEvent<HTMLAnchorElement>, productId:string) => {
     e.preventDefault();
-    // const wishListStorage = JSON.parse(localStorage.getItem("wishList")) || {};
     const wishListStorage:Record<string,boolean> = JSON.parse(localStorage.getItem("wishList")||'{}') || {};
     if (!wishListStorage[productId]) {
       const newWishList:Record<string,boolean> = { ...wishListStorage, [productId]: true };

@@ -6,10 +6,11 @@ export const cartSlice = createSlice({
   initialState:cartDefaultValue as CartState,
   reducers:{
     updateCartSlice(state,action:PayloadAction<CartState>){
-      const { carts,total,final_total } = action.payload;
-      state.carts = carts;
-      state.total = total;
-      state.final_total = final_total;
+      return action.payload;
+      // const { carts,total,final_total } = action.payload;
+      // state.carts = carts;
+      // state.total = total;
+      // state.final_total = final_total;
     },
     clearCartSlice(state){
       Object.assign(state, cartDefaultValue); 

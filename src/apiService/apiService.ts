@@ -1,7 +1,7 @@
 
 import { userInstance,adminInstance } from './apiConfig'
 export const apiService = {
-  axiosGet : async (path:string)=>{
+  axiosGet : async <T extends object>(path:string): Promise<{ data: T }>=>{
     const response = await userInstance.get(path);
     return response;
   },
