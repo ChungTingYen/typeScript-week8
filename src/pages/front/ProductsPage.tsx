@@ -1,32 +1,30 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { apiService } from "../../apiService/apiService";
-//等一下做
-// import { Product, LoadingOverlay, Pagination } from "../../component/front";
-import { Product, LoadingOverlay } from "../../component/front";
+import { Product, LoadingOverlay,Pagination } from "../../component/front";
 import { Product as ProductType} from "../../type/ProductType"
 import { Pagination as PaginationType} from "../../type/PaginationType"
-// import { useDispatch, useSelector } from "react-redux";
-// import { getWishList,wishListData } from '../../slice/wishListSlice'
-
 interface ApiResponse {
   products: ProductType[];
   pagination: PaginationType;
   [key: string]: any; // 允許其他未知屬性
 }
-// type WishListState = Record<string, boolean>;
 const APIPath = import.meta.env.VITE_API_PATH;
 export default function ProductsPage() {
   const [toggle, setToggle] = 
   useState<{id:number,toggle:boolean}[]>([{ id: 1, toggle: true },{ id: 2, toggle: true }]);
   const [products, setProducts] = useState<ProductType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [pageInfo, setPageInfo] = useState<PaginationType | null>(null);
+  const [pageInfo, setPageInfo] = useState<PaginationType>({
+    total_pages: 1,
+    current_page: 1,
+    has_pre: false,
+    has_next: false,
+    category: ''
+  });
   const [category, setCategory] = useState<string[]>(["全部"]);
   const [selectedCategory, setSelectedCategory] = useState<string>("全部");
   const [wishList, setWishList] = useState<string[]>([]);
-  // const dispatch = useDispatch();
-
   const getWishList = () => {
     //JSON預設只接受字串，所以但未使用ts的時候不會強制報錯
     const wishListStorage = JSON.parse(localStorage.getItem("wishList") || "{}") || {};
@@ -69,7 +67,6 @@ export default function ProductsPage() {
     };
     fetchData();
   }, [getProducts]);
-// useEffect(()=>{console.log('wishList:',wishList)})
   const handleToggle = (id:number):void => {
     // 找到目標對象
     const targetIndex = toggle.findIndex((item) => item.id === id);
@@ -183,7 +180,7 @@ export default function ProductsPage() {
                 ))}
               </div>
               <nav className="d-flex justify-content-center">
-                {/* <Pagination getData={getProducts} pageInfo={pageInfo} /> */}
+                <Pagination getData={getProducts} pageInfo={pageInfo} />
               </nav>
             </div>
           </div>

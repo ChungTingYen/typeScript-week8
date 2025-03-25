@@ -6,7 +6,7 @@ export { default as LoadingOverlay } from './LoadingOverlay';
 // export { default as CustomerInfoWithNoCart } from './CustomerInfoWithNoCart';
 // export { default as CustomerInfoWithNoCartNavbar } from './CustomerInfoWithNoCartNavbar';
 export { default as SwiperComponent } from './SwiperComponent';
-// export { default as Pagination } from '../front/Pagination';
+export { default as Pagination } from '../front/Pagination';
 // export { default as Orders } from '../front/Orders';
 // export { default as OrderModal } from '../front/OrderModal';
 // export { default as RadioCollapse } from '../front/RadioCollapse';

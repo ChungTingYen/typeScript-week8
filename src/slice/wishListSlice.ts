@@ -4,14 +4,11 @@ type WishListState = Record<string, boolean>;
 const initialState: WishListState = {}; //
 const wishListSlice = createSlice({
   name:'wishList',
-  initialState:(()=>{
-    const wishListStorage = JSON.parse(localStorage.getItem("wishList")||'{}') || {};
-    return { wishListStorage };
-  }),
+  initialState,
   reducers:{
     getWishList(state,){
       const wishListStorage = JSON.parse(localStorage.getItem("wishList")||'{}') || {};
-      return { ...state,...wishListStorage };
+      return { ...wishListStorage };
     }
   } 
 });

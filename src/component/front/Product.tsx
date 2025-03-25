@@ -42,9 +42,9 @@ const Product: React.FC<ProductComponent> = (props)=> {
   const handleWishList = (e:React.MouseEvent<HTMLAnchorElement>, productId:string) => {
     e.preventDefault();
     // const wishListStorage = JSON.parse(localStorage.getItem("wishList")) || {};
-    const wishListStorage = JSON.parse(localStorage.getItem("wishList")||'{}') || {};
+    const wishListStorage:Record<string,boolean> = JSON.parse(localStorage.getItem("wishList")||'{}') || {};
     if (!wishListStorage[productId]) {
-      const newWishList = { ...wishListStorage, [productId]: true };
+      const newWishList:Record<string,boolean> = { ...wishListStorage, [productId]: true };
       localStorage.setItem("wishList", JSON.stringify(newWishList));
       updateToastInfo("已加入心願清單", "success", true);
       setIsShowHart(true);
@@ -54,9 +54,9 @@ const Product: React.FC<ProductComponent> = (props)=> {
       localStorage.setItem("wishList", JSON.stringify(newWishList));
       setIsShowHart(false);
       updateToastInfo("已從心願清單移除", "success", true);
-      setWishList((prev) =>
+      setWishList((prev:string[]) =>
         prev.filter((item) => {
-          return item.includes(newWishList);
+          return newWishList[item];
         })
       );
     }
