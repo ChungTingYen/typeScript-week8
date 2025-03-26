@@ -13,7 +13,7 @@ export const apiService = {
     const response = await userInstance.get(path,config);
     return response;
   },
-  axiosDelete:async(path:string)=>{
+  axiosDelete:async <T extends object>(path:string): Promise<{ data: T }>=>{
     const response = await userInstance.delete(path);
     return response;
   },

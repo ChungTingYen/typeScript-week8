@@ -4,14 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Route } from "../../type/HeaderType";
 import { cartData } from "../../slice/cartSlice";
 import { getCartSign } from "../../utils/utils";
-// import { ActionTypes } from "../../type/ActionTypes";
 export default function Header() {
   const routes:Route[] = [
     { path: "/products", name: "產品列表", id: "products" },
-    // { path: "/cart", name: "購物車/訂購者資料", id: "cart" },
+    { path: "/cart", name: "購物車/訂購者資料", id: "cart" },
     { path: "/wishList", name: "心願清單", id: "wishList" },
     // { path: "/cart", name: "購物車", id: "cartSign" },
-    // { path: "/orderList", name: "訂單清單", id: "orderList" },
+    { path: "/orderList", name: "訂單清單", id: "orderList" },
     // { path: "/loginBackend", name: "登入後台", id: "loginBackend" },
   ];
   const {carts} = useSelector(cartData);

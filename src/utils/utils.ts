@@ -86,12 +86,15 @@ const APIPath = import.meta.env.VITE_API_PATH;
 import { apiService } from '../apiService/apiService';
 import { updateCartSlice } from '../slice/cartSlice';
 import { Dispatch } from "@reduxjs/toolkit";
-
+import { Cart,CartState } from '../type/CartType';
+interface CartDataState{
+  data:CartState
+}
 export const getCartSign = async (dispatch:Dispatch) => {
   try {
     const {
-      data: { data, },
-    } = await apiService.axiosGet(`/api/${APIPath}/cart`);
+      data: { data },
+    } = await apiService.axiosGet<CartDataState>(`/api/${APIPath}/cart`);
     if (data) {
       dispatch(updateCartSlice(data));
     }
