@@ -42,6 +42,7 @@ export default function CartPage() {
       const {
         data: { data },
       } :{data:CartDataState}= await apiService.axiosGet<CartDataState>(`/api/${APIPath}/cart`);
+      //其實可以省略 :{data:CartDataState}
       console.log('data:',data)
       setCart(data);
       setIsCouponPrice(!!(data?.carts?.[0]?.coupon));
