@@ -9,7 +9,8 @@ import { useDispatch } from "react-redux";
 import { useToast } from "../../hook";
 import { CartState } from '../../type/CartType';
 interface CartDataState{
-  data:CartState
+  data:CartState,
+  [key: string]: any; // 允許其他未知屬性
 }
 export default function CartPage() {
   const [cart, setCart] = useState<CartState|null>(null);
@@ -40,7 +41,8 @@ export default function CartPage() {
     try {
       const {
         data: { data },
-      } :{data:CartDataState}= await apiService.axiosGet(`/api/${APIPath}/cart`);
+      } :{data:CartDataState}= await apiService.axiosGet<CartDataState>(`/api/${APIPath}/cart`);
+      console.log('data:',data)
       setCart(data);
       setIsCouponPrice(!!(data?.carts?.[0]?.coupon));
     } catch (error) {

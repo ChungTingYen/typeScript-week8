@@ -1,8 +1,9 @@
 
 import { userInstance,adminInstance } from './apiConfig'
+import {AxiosResponse} from 'axios'
 export const apiService = {
-  axiosGet : async <T extends object>(path:string): Promise<{ data: T }>=>{
-    const response = await userInstance.get(path);
+  axiosGet : async <T extends object>(path:string): Promise<AxiosResponse<T>>=>{
+    const response = await userInstance.get<T>(path);
     return response;
   },
   axiosPost:async<T extends object>(path:string,postData:T = {} as T)=>{
@@ -13,7 +14,7 @@ export const apiService = {
     const response = await userInstance.get(path,config);
     return response;
   },
-  axiosDelete:async <T extends object>(path:string): Promise<{ data: T }>=>{
+  axiosDelete:async <T extends object>(path:string)=>{
     const response = await userInstance.delete(path);
     return response;
   },
