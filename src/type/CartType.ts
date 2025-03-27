@@ -3,7 +3,6 @@ export interface CartState {
     carts:Cart[],
     final_total:number,
     total:number,
-    
 }
 
 export interface Cart{

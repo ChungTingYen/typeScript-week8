@@ -1,3 +1,5 @@
+import {FormValues} from '../type/RegisterRulesType'
+import { RegisterOptions,} from "react-hook-form";
 export const tempProductDefaultValue = {
   imageUrl: "",
   title: "",
@@ -10,8 +12,9 @@ export const tempProductDefaultValue = {
   is_enabled: false,
   imagesUrl: [""],
 };
-
-export const registerRules = {
+  export const registerRules: {
+    [Key in keyof FormValues]?: RegisterOptions<FormValues, Key>;
+  } = {
   email:{
     required: "Email欄位必填",
     pattern: {
