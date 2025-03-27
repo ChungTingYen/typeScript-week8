@@ -1,5 +1,6 @@
 
 import { userInstance,adminInstance } from './apiConfig'
+//下面有幾種不同的泛型結構設定，最完整的應該是axiosGetByConfig，但其他的應該都不會錯誤
 export const apiService = {
   axiosGet : async <T extends object>(path:string): Promise<{ data: T }>=>{
     const response = await userInstance.get(path);
@@ -9,9 +10,9 @@ export const apiService = {
     const response = await userInstance.post(path,postData);
     return response;
   },
-  axiosGetByConfig : async <T extends object> (path:string,config:T = {} as T)=>{
-    const response = await userInstance.get(path,config);
-    return response;
+  axiosGetByConfig : async <T extends object,U extends object> (path:string,config:U):Promise<{data:T}>=>{
+    const response = await userInstance.get<T>(path,config);
+    return {data:response.data} ;
   },
   axiosDelete:async <T extends object>(path:string): Promise<{ data: T }>=>{
     const response = await userInstance.delete(path);

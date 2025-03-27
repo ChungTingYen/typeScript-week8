@@ -52,9 +52,7 @@ export default function CartPage() {
 
   const handleCoupon = async():Promise<void>=>{
     const putData: { data: { code: string } } = {
-      data:{
-        code: couponRef.current?.value ?? ''
-      }
+      data:{code: couponRef.current?.value ?? ''}
     };
     try {
       await apiService.axiosPost(`/api/${APIPath}/coupon`,putData);

@@ -5,6 +5,7 @@ interface updateToastInfoType{
   text: string,
   type:string,
   isShowToast: boolean,
+  id?:number
 }
 const useToast = ()=>{
   const dispatch = useDispatch();
