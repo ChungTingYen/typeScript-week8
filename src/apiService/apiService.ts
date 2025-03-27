@@ -1,9 +1,9 @@
-
 import { userInstance,adminInstance } from './apiConfig'
+import {AxiosResponse} from 'axios'
 //下面有幾種不同的泛型結構設定，最完整的應該是axiosGetByConfig，但其他的應該都不會錯誤
 export const apiService = {
-  axiosGet : async <T extends object>(path:string): Promise<{ data: T }>=>{
-    const response = await userInstance.get(path);
+  axiosGet : async <T extends object>(path:string): Promise<AxiosResponse<T>>=>{
+    const response = await userInstance.get<T>(path);
     return response;
   },
   axiosPost:async<T extends object>(path:string,postData:T = {} as T)=>{
@@ -14,7 +14,7 @@ export const apiService = {
     const response = await userInstance.get<T>(path,config);
     return {data:response.data} ;
   },
-  axiosDelete:async <T extends object>(path:string): Promise<{ data: T }>=>{
+  axiosDelete:async <T extends object>(path:string)=>{
     const response = await userInstance.delete(path);
     return response;
   },
