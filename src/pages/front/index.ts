@@ -8,5 +8,5 @@ export { default as CartPage } from './CartPage';
 // // export { default as ProductDetailPageBySide } from './ProductDetailPageBySide';
 export { default as CheckoutFormPage } from './CheckoutFormPage';
 // export { default as OrderListsPage } from './OrderListsPage';
-// export { default as CheckoutPaymentPageFromOrders } from './CheckoutPaymentPageFromOrders';
+export { default as CheckoutPaymentPageFromOrders } from './CheckoutPaymentPageFromOrders';
 export { default as ProductsPageFromWishList } from './ProductsPageFromWishList';

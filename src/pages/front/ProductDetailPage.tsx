@@ -176,25 +176,7 @@ export default function ProductDetailPage() {
               </div>
             </div>
           </div>
-
-          {/* <div className="row my-5">
-          <div className="col-md-4">
-            <p>
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-              erat, sed diam voluptua. At vero eos et accusam et
-            </p>
-          </div>
-          <div className="col-md-3">
-            <p className="text-muted">
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-              nonumy eirmod tempor
-            </p>
-          </div>
-        </div> */}
-        {
-          product && <SwiperComponent product={product} swiperType={1}/>
-        }
+        { product && <SwiperComponent product={product} swiperType={1}/> }
         </div>
       </div>
     </>

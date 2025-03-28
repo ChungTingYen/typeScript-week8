@@ -1,5 +1,5 @@
 export interface Product {
-    type: 'ProductType';
+    type: 'ProductType'; //必須先給初值避免compile的時候就判斷錯誤，之後在取得資料時還必須再放進來一次
     category: string,
     content: string,
     description: string,
@@ -20,6 +20,6 @@ interface ImagesType{
 }
 
 export interface ProductForHomePage {
-    type: 'ProductTypeForHomePage';
+    type: 'ProductTypeForHomePage';//必須先給初值避免compile的時候就判斷錯誤，之後在取得資料時還必須再放進來一次
     imagesUrl:ImagesType[],
 }
