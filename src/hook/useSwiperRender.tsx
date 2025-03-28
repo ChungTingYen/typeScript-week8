@@ -42,8 +42,15 @@ function useSwiperRender(product:SwiperProps['product'],swiperType:SwiperProps['
   useEffect(() => {
     if(product.imagesUrl){
       let swiperLoopLength = 1;
+      let imageCount = 1;
+      console.log('product.type:',product.type)
+      if(product.type==='ProductTypeForHomePage')
+        imageCount = product.imagesUrl?.filter((image) => image.url !== "").length || 0;
+      else
+        imageCount = product.imagesUrl?.filter((image) => image).length || 0;
+
       if(swiperType){
-        const imageCount = product.imagesUrl?.filter((image) => image !== "").length || 0;
+        // const imageCount = product.imagesUrl?.filter((image) => image !== "").length || 0;
         if(imageCount > 0){
           swiperLoopLength = imageCount <= 2 ? imageCount : imageCount - 1;
           imageRef.current = swiperLoopLength;
