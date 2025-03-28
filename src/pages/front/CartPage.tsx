@@ -51,7 +51,6 @@ export default function CartPage() {
       setIsLoading(false);
     }
   };
-
   const handleCoupon = async():Promise<void>=>{
     const putData: { data: { code: string } } = {
       data:{code: couponRef.current?.value ?? ''}

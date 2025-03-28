@@ -1,17 +1,12 @@
 // import { Autoplay, Navigation, Pagination, Scrollbar, A11y, EffectCoverflow } 
 // from "swiper/modules";
+import { Product as ProductType,ProductForHomePage} from "./ProductType";
 export interface SwiperProps{
-    product: Product,
+    product: ProductType | ProductForHomePage,
     swiperType:0 | 1; 
 }
 
- interface ImagesUrlType{
-    url:string,
-    content?:string
-}
-export interface Product {
-    imagesUrl: ImagesUrlType[]; 
-  }
+
 
 //   export interface SwiperConfig{
 //     modules?: (typeof Autoplay | typeof Navigation | typeof Pagination | typeof Scrollbar | typeof A11y | typeof EffectCoverflow)[];

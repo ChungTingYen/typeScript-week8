@@ -40,7 +40,7 @@ export default function ProductsPage() {
       };
       const {
         data: { products, pagination, },
-      } = await apiService.axiosGetByConfig<ApiResponse,{params:{page:number,category:string}}>(`/api/${APIPath}/products`,  { params });
+      } = await apiService.axiosGetByConfig<ApiResponse,{params:{page:number,category:string}}>(`/api/${APIPath}/products`,   {params} );
       setProducts(products);
       setPageInfo(pagination);
     } catch (error) {

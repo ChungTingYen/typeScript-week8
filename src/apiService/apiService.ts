@@ -10,7 +10,7 @@ export const apiService = {
     const response = await userInstance.post(path,postData);
     return response;
   },
-  axiosGetByConfig : async <T extends object,U extends object> (path:string,config:U):Promise<{data:T}>=>{
+  axiosGetByConfig : async <T extends object,U extends object> (path:string,config:U = {} as U):Promise<{data:T}>=>{
     const response = await userInstance.get<T>(path,config);
     return {data:response.data} ;
   },

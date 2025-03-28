@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { SwiperComponent } from '../../component/front';
-import { Product } from '../../type/swiperType'
+import { ProductForHomePage } from '../../type/ProductType'
 export default function HomePage() {
-  const product:Product = {
+  const product:ProductForHomePage = {
+    type:'ProductTypeForHomePage',//為了讓product能夠在Swiper中判斷type
     imagesUrl:[
       {
         url:"https://plus.unsplash.com/premium_photo-1664194583959-c44d377a7835?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
