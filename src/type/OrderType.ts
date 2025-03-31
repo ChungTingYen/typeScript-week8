@@ -8,9 +8,10 @@ export interface OrderType{
     id: string,
     is_paid: boolean,
     message:string ,
-    products: product[],
+    products: Product,
+    total?:number,
     user: UserWithoutMessage,
-    num: number
+    num: number,
 }
 
 interface product{

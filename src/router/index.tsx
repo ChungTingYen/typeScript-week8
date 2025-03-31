@@ -2,7 +2,7 @@ import {createHashRouter} from 'react-router'
 import FrontLayout from '../layouts/FrontLayout'
 import {HomePage,ProductsPage,ProductsPageFromWishList,
     CartPage,CheckoutFormPage,NotFoundPage,ProductDetailPage,
-    CheckoutPaymentPageFromOrders} from '../pages/front'
+    CheckoutPaymentPageFromOrders,OrderListsPage} from '../pages/front'
 const routes = [
     {
         path: "/",
@@ -13,7 +13,7 @@ const routes = [
             { path: "product/:id",element: <ProductDetailPage />,},
             { path: "cart", element: <CartPage /> },
             { path: "checkout", element: <CheckoutFormPage /> },
-            // { path: "orderList", element: <OrderListsPage /> },
+            { path: "orderList", element: <OrderListsPage /> },
             { path: "payment/:id", element: <CheckoutPaymentPageFromOrders /> },
             { path: "wishList", element: <ProductsPageFromWishList /> },
             { path: "*",element: <NotFoundPage />,},

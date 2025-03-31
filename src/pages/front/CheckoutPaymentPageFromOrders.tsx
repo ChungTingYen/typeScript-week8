@@ -1,8 +1,7 @@
  
 import { useRef, useState, useEffect, useCallback, Fragment } from "react";
 import { apiService } from "../../apiService/apiService";
-// import { LoadingOverlay,RadioCollapse } from "../../component/front";
-import { LoadingOverlay } from "../../component/front";
+import { LoadingOverlay,RadioCollapse } from "../../component/front";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const APIPath = import.meta.env.VITE_API_PATH;
@@ -10,7 +9,7 @@ import { useToast } from "../../hook";
 import { useNavigatePage } from "../../hook";
 import { getCartSign } from '../../utils/utils';
 import { useDispatch } from "react-redux";
-import {OrderType,GoodsType} from '../../type/OrderType'
+import {GoodsType} from '../../type/OrderType'
 interface PayType{
   success: boolean
 }
@@ -28,7 +27,7 @@ export default function CheckoutPaymentPageFromOrders() {
   const updateToast = useToast();
   const dispatch = useDispatch();
   const handleToggle = useCallback(
-    (e:React.ChangeEvent<HTMLButtonElement>) => {
+    (e:React.ChangeEvent<HTMLInputElement>) => {
       contentRef.current.forEach((ref, index) => {
         if (ref) {
           const value = e.target.value;
@@ -45,6 +44,24 @@ export default function CheckoutPaymentPageFromOrders() {
     },
     [activeKey]
   );
+  // const handleToggle = useCallback(
+  //   (e:React.ChangeEvent<HTMLInputElement>) => {
+  //     contentRef.current.forEach((ref, index) => {
+  //       if (ref) {
+  //         const value = e.target.value;
+  //         if (index.toString() === value) {
+  //           if (activeKey !== value) {
+  //             ref.classList.add("show");
+  //             setActiveKey(value);
+  //           }
+  //         } else {
+  //           ref.classList.remove("show");
+  //         }
+  //       }
+  //     });
+  //   },
+  //   [activeKey]
+  // );
 
   const handlePay = async ():Promise<void> => {
     setIsLoading(true);
@@ -164,9 +181,9 @@ export default function CheckoutPaymentPageFromOrders() {
               </div>
             </div>
             <div className="col-md-6">
-              {/* <div className="accordion" id="accordionExample">
+              <div className="accordion" id="accordionExample">
                 <RadioCollapse
-                  index="0"
+                  index={0}
                   activeKey={activeKey}
                   handleToggle={handleToggle}
                   title="信用卡"
@@ -186,7 +203,7 @@ export default function CheckoutPaymentPageFromOrders() {
                   ]}
                 />
                 <RadioCollapse
-                  index="1"
+                  index={1}
                   activeKey={activeKey}
                   handleToggle={handleToggle}
                   title="Apple Pay"
@@ -201,7 +218,7 @@ export default function CheckoutPaymentPageFromOrders() {
                   ]}
                 />
                 <RadioCollapse
-                  index="2"
+                  index={2}
                   activeKey={activeKey}
                   handleToggle={handleToggle}
                   title="Line Pay"
@@ -209,7 +226,7 @@ export default function CheckoutPaymentPageFromOrders() {
                   id="LinePay"
                   contents={[]}
                 />
-              </div> */}
+              </div>
               <div className="d-flex flex-column-reverse flex-md-row mt-4 justify-content-between align-items-md-center align-items-end w-100">
                 <Link to="/products" className="text-dark mt-md-0 mt-3 fw-bold">
                   <i className="fas fa-chevron-left me-2"></i>

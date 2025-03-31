@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
-import { useEffect } from "react";
+
 const SwiperComponent = (props:SwiperProps) => {
   const { product,swiperType } = props;
   const { shouldRenderSwiper,swiperConfig,key  } = useSwiperRender(product,swiperType);

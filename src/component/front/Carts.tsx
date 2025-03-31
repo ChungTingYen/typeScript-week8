@@ -2,9 +2,6 @@
 import { apiService } from "../../apiService/apiService";
 const APIPath = import.meta.env.VITE_API_PATH;
 import { useDispatch } from "react-redux";
-import { setIsShowToastSlice } from "../../slice/toastSlice";
-// import { updateCartSlice } from "../../slice/cartSlice";
-// import {  useGetCart } from "../../hook";
 import { useToast } from "../../hook";
 import { Cart } from '../../type/CartType';
 interface CartComponentProp{
