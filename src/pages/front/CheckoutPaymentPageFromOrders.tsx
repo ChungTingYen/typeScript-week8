@@ -129,15 +129,16 @@ export default function CheckoutPaymentPageFromOrders() {
     paymentRef.current[1] = newItem1; 
   },[])
   useEffect(()=>{
-      paymentRef.current.map((item)=>{
-        if(item.id!==parseInt(activeKey)){
-          item.check.forEach((checkItem)=>{
-            Object.keys(checkItem).forEach((key) => {
-            if (checkItem[key] instanceof HTMLInputElement) {
-              checkItem[key].value = ''; // 清空 HTMLInputElement 的 value
-            } 
-        })})
-  }})
+    paymentRef.current.filter((title)=>title.id !== parseInt(activeKey))
+    .map((item)=>{
+      item.check.map((checkItem)=>{
+        Object.keys(checkItem).forEach((key) => {
+          if (checkItem[key] instanceof HTMLInputElement) {
+            checkItem[key].value = ''; // 清空 HTMLInputElement 的 value
+          } 
+        });
+      });
+    });
   },[activeKey])
 
   useEffect(() => {
