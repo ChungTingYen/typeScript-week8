@@ -117,7 +117,7 @@ export default function CheckoutPaymentPageFromOrders() {
       id:0,
       title:'信用卡',
       check:[
-        {creditNumberInput:creditNumberInput,regex :/^\d{3}$/},
+        {creditNumberInput:creditNumberInput,regex :/^\d{12}$/},
         {creditLast3Number:creditLast3NumberInput,regex :/^\d{3}$/}]
     };
     paymentRef.current[0] = newItem0; 
