@@ -14,7 +14,7 @@ export interface OrderType{
     num: number,
 }
 
-interface product{
+export interface OrderProductType{
     id: string,
     product_id:string,
     qty: number

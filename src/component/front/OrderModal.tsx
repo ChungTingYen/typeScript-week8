@@ -5,12 +5,12 @@ import { useNavigatePage } from "../../hook";
 import { OrderType as OrderTypeComponent} from '../../type/OrderType'
 interface OrderType{
   tempProduct:OrderTypeComponent, 
-  setIsProductModalOpen:React.Dispatch<React.SetStateAction<boolean>>, 
-  isProductModalOpen:boolean
+  setIsModalOpen:React.Dispatch<React.SetStateAction<boolean>>, 
+  isModalOpen:boolean
 }
 
 const OrderModal = (props:OrderType) => {
-  const { tempProduct, setIsProductModalOpen, isProductModalOpen } = props;
+  const { tempProduct, setIsModalOpen, isModalOpen } = props;
   const [modalProduct, setModalProduct] = useState<OrderTypeComponent>(tempProduct);
   const navigate = useNavigatePage();
   const productModalRef = useRef<HTMLDivElement|null>(null);
@@ -18,7 +18,7 @@ const OrderModal = (props:OrderType) => {
     if (productModalRef.current) { // 確保 productModalRef.current 不為 null
       const modalInstance = Modal.getInstance(productModalRef.current);
       modalInstance?.hide();
-      setIsProductModalOpen(false);
+      setIsModalOpen(false);
     }
   };
   const openProductModal = () => {
@@ -36,21 +36,21 @@ const OrderModal = (props:OrderType) => {
       const modalElement = productModalRef.current;
       new Modal(productModalRef.current, { backdrop: true });
       const handleClose = ():void => {
-        setIsProductModalOpen(false);
+        setIsModalOpen(false);
       };
       modalElement.addEventListener("hidden.bs.modal", handleClose);
       return () => {
         modalElement.removeEventListener("hidden.bs.modal", handleClose);
       };
     }
-  }, [setIsProductModalOpen]);
+  }, [setIsModalOpen]);
 
   useEffect(() => {
-    if (isProductModalOpen) {
+    if (isModalOpen) {
       if (Object.keys(tempProduct).length > 0) setModalProduct(tempProduct);
       openProductModal();
     }
-  }, [isProductModalOpen, tempProduct]);
+  }, [isModalOpen, tempProduct]);
   return (
     <>
       <div

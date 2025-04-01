@@ -43,7 +43,7 @@ function useSwiperRender(product:SwiperProps['product'],swiperType:SwiperProps['
     if(product.imagesUrl){
       let swiperLoopLength = 1;
       let imageCount = 1;
-      console.log('product.type:',product.type)
+      // console.log('product.type:',product.type);
       if(product.type==='ProductTypeForHomePage')
         imageCount = product.imagesUrl?.filter((image) => image.url !== "").length || 0;
       else

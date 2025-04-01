@@ -21,8 +21,7 @@ interface RadioCollapseType{
 }
 
 const RadioCollapse = (props:RadioCollapseType) => {
-  const { index, activeKey, handleToggle, title, id, contentRef, contents } =
-      props;
+  const { index, activeKey, handleToggle, title, id, contentRef, contents } = props;
   const radioRef = useRef<HTMLInputElement>(null);
   return (
     <div className="card rounded-0" onClick={() => radioRef.current && radioRef.current.click()}> 
@@ -58,6 +57,7 @@ const RadioCollapse = (props:RadioCollapseType) => {
                   className="form-control"
                   id={content.id}
                   placeholder={content.placeholder}
+                  defaultValue=''
                 />
               </div>
             ))}

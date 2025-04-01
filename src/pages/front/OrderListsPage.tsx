@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { LoadingOverlay, Pagination, OrderModal } from "../../component/front";
+import { LoadingOverlay, Pagination, OrderModal,Orders } from "../../component/front";
 import { apiService } from "../../apiService/apiService";
 const APIPath = import.meta.env.VITE_API_PATH;
 import {OrderType} from '../../type/OrderType'
@@ -45,8 +45,7 @@ export default function OrderListsPage() {
   const openProductDetailModal = ():void => {
     setIsOrderModalOpen(true);
   };
-  const handleOpenOrderModal = useCallback(
-    (OrderId:string):void => {
+  const handleOpenOrderModal = useCallback((OrderId:string):void => {
       const temp = orders.find((item) => item.id === OrderId);
       setTempOrder(temp);
       openProductDetailModal();
@@ -102,41 +101,7 @@ export default function OrderListsPage() {
               <div className="container mt-md-5 mt-3 mb-7">
                 <div className="row">
                   {orders.map((order) => (
-                    <div className="col-md-4" key={order.id}>
-                      <div className="">
-                        <div
-                          className="card border-1 mb-4 p-2 position-relative bg-light text-black mx-auto"
-                          style={{
-                            // width: "230px",
-                            width: width,
-                            height: "120px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handleOpenOrderModal(order.id)}
-                        >
-                          <span>{order.id}</span>
-                          <div className="card-body p-0">
-                            <p className="card-text mb-0">
-                              {handleCreateTime(order.create_at)}
-                            </p>
-                          </div>
-                          <div className="card-body p-0">
-                            <p className="card-text mb-0">
-                              NT${order.total?.toLocaleString()}
-                            </p>
-                          </div>
-                          <div className="card-body p-0">
-                            <p
-                              className={`card-text mb-0 ${
-                                order.is_paid ? "text-success" : "text-danger"
-                              }`}
-                            >
-                              {order.is_paid ? "已付款" : "未付款"}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <Orders key={order.id} order={order} width={width} handleOpenOrderModal={handleOpenOrderModal} />
                   ))}
                 </div>
               </div>
@@ -156,8 +121,8 @@ export default function OrderListsPage() {
       {tempOrder && (
         <OrderModal
           tempProduct={tempOrder}
-          isProductModalOpen={isOrderModalOpen}
-          setIsProductModalOpen={setIsOrderModalOpen}
+          isModalOpen={isOrderModalOpen}
+          setIsModalOpen={setIsOrderModalOpen}
         />
       )}
     </>

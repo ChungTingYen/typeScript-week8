@@ -1,15 +1,22 @@
  
-import { useRef, useState, useEffect, useCallback, Fragment } from "react";
+import { useRef, useState, useEffect, useCallback, Fragment, use } from "react";
 import { apiService } from "../../apiService/apiService";
 import { LoadingOverlay,RadioCollapse } from "../../component/front";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 const APIPath = import.meta.env.VITE_API_PATH;
-import { useToast } from "../../hook";
-import { useNavigatePage } from "../../hook";
+import { useNavigatePage,useToast } from "../../hook";
 import { getCartSign } from '../../utils/utils';
 import { useDispatch } from "react-redux";
 import {GoodsType} from '../../type/OrderType'
+interface PaymentRefItem  {
+  id:number,
+  title:string,
+  check: CheckItem[]; // check 是一個陣列，包含多個 CheckItem 物件
+}
+interface CheckItem {
+  [key: string]: HTMLInputElement | RegExp; // 每個物件的屬性可以是 HTMLInputElement 或 RegExp
+}
 interface PayType{
   success: boolean
 }
@@ -18,6 +25,7 @@ interface OrderTypeInAxios{
 }
 export default function CheckoutPaymentPageFromOrders() {
   const contentRef = useRef<HTMLDivElement[]>([]);
+  const paymentRef = useRef<PaymentRefItem[]>([]);
   const { id: inputId } = useParams();
   const [activeKey, setActiveKey] = useState<string>('0');
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -26,6 +34,7 @@ export default function CheckoutPaymentPageFromOrders() {
   const navigate = useNavigatePage();
   const updateToast = useToast();
   const dispatch = useDispatch();
+  
   const handleToggle = useCallback(
     (e:React.ChangeEvent<HTMLInputElement>) => {
       contentRef.current.forEach((ref, index) => {
@@ -44,26 +53,39 @@ export default function CheckoutPaymentPageFromOrders() {
     },
     [activeKey]
   );
-  // const handleToggle = useCallback(
-  //   (e:React.ChangeEvent<HTMLInputElement>) => {
-  //     contentRef.current.forEach((ref, index) => {
-  //       if (ref) {
-  //         const value = e.target.value;
-  //         if (index.toString() === value) {
-  //           if (activeKey !== value) {
-  //             ref.classList.add("show");
-  //             setActiveKey(value);
-  //           }
-  //         } else {
-  //           ref.classList.remove("show");
-  //         }
-  //       }
-  //     });
-  //   },
-  //   [activeKey]
-  // );
+  
+  const checkPayment = ()=>{
+    let checkIsOK = true;
+    const checkItem = paymentRef.current.filter((item)=>item.id===parseInt(activeKey));
+    if(checkItem.length===0) {
+      updateToast('錯誤:沒有取得結帳方式', "secondary", true);
+      checkIsOK = false;
+      return checkIsOK;
+    }
+    checkItem.map((item)=>{
+      item.check.map((checkObj)=>{
+        let isCheckObjValid = true;
+        Object.entries(checkObj).forEach(([_,inputElment])=>{
+          if(inputElment instanceof HTMLInputElement){
+            const regex = checkObj.regex;
+            if(regex instanceof RegExp && !regex.test(inputElment.value)){
+              isCheckObjValid = false;
+            }
+          }
+          if (!isCheckObjValid) {
+            checkIsOK = false;
+          }
+      });
+      });
+    });
+    if(!checkIsOK)
+      updateToast(`${checkItem[0].title} 輸入錯誤`, "secondary", true);
+    return checkIsOK;
+  }
 
   const handlePay = async ():Promise<void> => {
+    if(!checkPayment())
+     return ;
     setIsLoading(true);
     try {
       const {
@@ -82,6 +104,41 @@ export default function CheckoutPaymentPageFromOrders() {
       setIsLoading(false);
     }
   };
+  useEffect(()=>{
+    const credit = document.querySelector('#credit');
+    if(credit)
+      credit.classList.add("show");
+  },[])
+  useEffect(()=>{
+    const creditNumberInput = document.querySelector('#creditNumber') as HTMLInputElement;
+    const creditLast3NumberInput = document.querySelector('#creditLast3Number') as HTMLInputElement;
+    const applePayInput  = document.querySelector('#applePayNumber')  as HTMLInputElement;
+    const newItem0: PaymentRefItem = {
+      id:0,
+      title:'信用卡',
+      check:[
+        {creditNumberInput:creditNumberInput,regex :/^\d{3}$/},
+        {creditLast3Number:creditLast3NumberInput,regex :/^\d{3}$/}]
+    };
+    paymentRef.current[0] = newItem0; 
+    const newItem1: PaymentRefItem = {
+      id:1,
+      title:'Apple Pay',
+      check:[{ applePayNumber: applePayInput, regex :/^\d{12}$/}]
+    };
+    paymentRef.current[1] = newItem1; 
+  },[])
+  useEffect(()=>{
+      paymentRef.current.map((item)=>{
+        if(item.id!==parseInt(activeKey)){
+          item.check.forEach((checkItem)=>{
+            Object.keys(checkItem).forEach((key) => {
+            if (checkItem[key] instanceof HTMLInputElement) {
+              checkItem[key].value = ''; // 清空 HTMLInputElement 的 value
+            } 
+        })})
+  }})
+  },[activeKey])
 
   useEffect(() => {
     const getOrder = async (inputId:string):Promise<void> => {
@@ -208,10 +265,10 @@ export default function CheckoutPaymentPageFromOrders() {
                   handleToggle={handleToggle}
                   title="Apple Pay"
                   contentRef={contentRef}
-                  id="ApplePay"
+                  id="applePay"
                   contents={[
                     {
-                      id: "ApplePay",
+                      id: "applePayNumber",
                       title: "號碼",
                       placeholder: "123456789012",
                     },
@@ -223,7 +280,7 @@ export default function CheckoutPaymentPageFromOrders() {
                   handleToggle={handleToggle}
                   title="Line Pay"
                   contentRef={contentRef}
-                  id="LinePay"
+                  id="linePay"
                   contents={[]}
                 />
               </div>
