@@ -104,7 +104,7 @@ export default function CheckoutPaymentPageFromOrders() {
       setIsLoading(false);
     }
   };
-  const getOrder = async (inputId:string):Promise<void> => {
+  const getOrder = useCallback(async (inputId:string):Promise<void> => {
     setIsLoading(true);
     try {
       const {
@@ -116,7 +116,7 @@ export default function CheckoutPaymentPageFromOrders() {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[inputId]);
   const resetOtherInput = ():void=>{
     paymentRef.current.filter((title)=>title.id !== parseInt(activeKey))
       .map((item)=>{
@@ -166,7 +166,7 @@ export default function CheckoutPaymentPageFromOrders() {
   useEffect(() => {
     if(firstLoadRef.current && inputId)
       getOrder(inputId);
-  }, [inputId]);
+  }, [getOrder,inputId]);
 
   return (
     <>
