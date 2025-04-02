@@ -104,57 +104,66 @@ export default function CheckoutPaymentPageFromOrders() {
       setIsLoading(false);
     }
   };
-  useEffect(()=>{
-    const credit = document.querySelector('#credit');
-    if(credit)
-      credit.classList.add("show");
-  },[])
-  useEffect(()=>{
-    const creditNumberInput = document.querySelector('#creditNumber') as HTMLInputElement;
-    const creditLast3NumberInput = document.querySelector('#creditLast3Number') as HTMLInputElement;
-    const applePayInput  = document.querySelector('#applePayNumber')  as HTMLInputElement;
-    const newItem0: PaymentRefItem = {
-      id:0,
-      title:'信用卡',
-      check:[
-        {creditNumberInput:creditNumberInput,regex :/^\d{12}$/},
-        {creditLast3Number:creditLast3NumberInput,regex :/^\d{3}$/}]
-    };
-    paymentRef.current[0] = newItem0; 
-    const newItem1: PaymentRefItem = {
-      id:1,
-      title:'Apple Pay',
-      check:[{ applePayNumber: applePayInput, regex :/^\d{12}$/}]
-    };
-    paymentRef.current[1] = newItem1; 
-  },[])
-  useEffect(()=>{
+  const getOrder = async (inputId:string):Promise<void> => {
+    setIsLoading(true);
+    try {
+      const {
+        data: { order },
+      } = await apiService.axiosGet<OrderTypeInAxios>(`/api/${APIPath}/order/${inputId}`);
+      setGoods(order);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const resetOtherInput = ():void=>{
     paymentRef.current.filter((title)=>title.id !== parseInt(activeKey))
-    .map((item)=>{
-      item.check.map((checkItem)=>{
-        Object.keys(checkItem).forEach((key) => {
-          if (checkItem[key] instanceof HTMLInputElement) {
-            checkItem[key].value = ''; // 清空 HTMLInputElement 的 value
-          } 
+      .map((item)=>{
+        item.check.map((checkItem)=>{
+          Object.keys(checkItem).forEach((key) => {
+            if (checkItem[key] instanceof HTMLInputElement) {
+              checkItem[key].value = ''; // 清空 HTMLInputElement 的 value
+            } 
+          });
         });
-      });
     });
+  }
+  useEffect(()=>{
+    (function(){
+      const credit = document.querySelector('#credit');
+      if(credit)
+        credit.classList.add("show");
+    })()
+  },[])
+  
+  useEffect(()=>{
+    (function(){
+      const creditNumberInput = document.querySelector('#creditNumber') as HTMLInputElement;
+      const creditLast3NumberInput = document.querySelector('#creditLast3Number') as HTMLInputElement;
+      const applePayInput  = document.querySelector('#applePayNumber')  as HTMLInputElement;
+      const newItem0: PaymentRefItem = {
+        id:0,
+        title:'信用卡',
+        check:[
+          {creditNumberInput:creditNumberInput,regex :/^\d{12}$/},
+          {creditLast3Number:creditLast3NumberInput,regex :/^\d{3}$/}]
+      };
+      paymentRef.current[0] = newItem0; 
+      const newItem1: PaymentRefItem = {
+        id:1,
+        title:'Apple Pay',
+        check:[{ applePayNumber: applePayInput, regex :/^\d{12}$/}]
+      };
+      paymentRef.current[1] = newItem1; 
+    }
+    )()
+  },[]);
+  useEffect(()=>{
+    resetOtherInput();
   },[activeKey])
 
   useEffect(() => {
-    const getOrder = async (inputId:string):Promise<void> => {
-      setIsLoading(true);
-      try {
-        const {
-          data: { order },
-        } = await apiService.axiosGet<OrderTypeInAxios>(`/api/${APIPath}/order/${inputId}`);
-        setGoods(order);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     if(firstLoadRef.current && inputId)
       getOrder(inputId);
   }, [inputId]);

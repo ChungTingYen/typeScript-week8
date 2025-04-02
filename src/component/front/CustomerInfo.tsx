@@ -22,7 +22,7 @@ interface UserInfoType{
   data:{
     user: Omit<FormValues, "message">; // 使用 FormValues，但去掉 message
     message: string; // 單獨保留 message 屬性
-}
+  }
 }
 const Input = (props:InputPropsType) => {
   const { label, id,  type, placeholder, register, rules, errors } = props;
