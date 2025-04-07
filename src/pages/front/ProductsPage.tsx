@@ -9,10 +9,17 @@ interface ApiResponse {
   pagination: PaginationType;
   [key: string]: any; // 允許其他未知屬性
 }
+interface WishType {
+  [key:string]:boolean
+}
+interface ToogleType {
+  id:number,toggle:boolean
+}
 const APIPath = import.meta.env.VITE_API_PATH;
 export default function ProductsPage() {
   const [toggle, setToggle] = 
   useState<{id:number,toggle:boolean}[]>([{ id: 1, toggle: true },{ id: 2, toggle: true }]);
+  // useState<ToogleType[]>([{ id: 1, toggle: true },{ id: 2, toggle: true }]);
   const [products, setProducts] = useState<ProductType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pageInfo, setPageInfo] = useState<PaginationType>({
@@ -27,7 +34,9 @@ export default function ProductsPage() {
   const [wishList, setWishList] = useState<string[]>([]);
   const getWishList = () => {
     //JSON預設只接受字串，所以但未使用ts的時候不會強制報錯
-    const wishListStorage:Record<string,boolean> = JSON.parse(localStorage.getItem("wishList") || "{}") || {};
+    //2種寫法
+    // const wishListStorage:Record<string,boolean> = JSON.parse(localStorage.getItem("wishList") || "{}") || {};
+    const wishListStorage:Partial<WishType> = JSON.parse(localStorage.getItem("wishList") || "{}") || {};
     setWishList(Object.keys(wishListStorage)); // 更新組件狀態
   };
 
@@ -67,18 +76,18 @@ export default function ProductsPage() {
     fetchData();
   }, [getProducts]);
   const handleToggle = (id:number):void => {
-    // 找到目標對象
-    const targetIndex = toggle.findIndex((item) => item.id === id);
-    if (targetIndex !== -1) {
-      const newToggle = [...toggle];
-      // 更新目標對象的值
-      newToggle[targetIndex] = {
-        ...newToggle[targetIndex],
-        toggle: !newToggle[targetIndex].toggle,
-      };
-      // 設置新的狀態
-      setToggle(newToggle);
-    }
+    setToggle((prev)=>{
+       // 找到目標對象
+      const targetIndex = toggle.findIndex((item) => item.id === id);
+      if(targetIndex!==-1){
+        const updateToggle = [...prev];
+        // 更新目標對象的值
+        updateToggle[targetIndex].toggle=!updateToggle[targetIndex].toggle;
+        return updateToggle;
+      }else{
+        return [...prev,{id,toggle:true}]
+      }
+    })
   };
   const getCategory = async () => {
     try {
@@ -139,7 +148,7 @@ export default function ProductsPage() {
                   <div
                     id="collapseOne"
                     className={`collapsible-content ${
-                      toggle[0].toggle ? "show" : ""
+                      toggle[0]?.toggle ? "show" : ""
                     }`}
                   >
                     <div className="card-body py-0">
