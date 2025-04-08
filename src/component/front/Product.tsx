@@ -1,19 +1,19 @@
 
 import { Link } from "react-router-dom";
 import { apiService } from "../../apiService/apiService";
-import { useNavigatePage, useGetCart,useToast } from "../../hook";
+import { useNavigatePage, useGetCart, useToast } from "../../hook";
 import { useEffect, useState, memo } from "react";
 import { updateCartSlice } from "../../slice/cartSlice";
-import { Product as ProductType} from "../../type/ProductType"
+import { Product as ProductType } from "../../type/ProductType"
 const APIPath = import.meta.env.VITE_API_PATH;
 interface ProductComponent {
-  product:ProductType,
+  product: ProductType,
   // setIsLoading:React.Dispatch<React.SetStateAction<boolean>>;  
-  setIsLoading:(isLoading: boolean)=>void;  
-  wishList:string[], 
-  setWishList: React.Dispatch<React.SetStateAction<string[]>>; 
+  setIsLoading: (isLoading: boolean) => void;
+  wishList: string[],
+  setWishList: React.Dispatch<React.SetStateAction<string[]>>;
 }
-const Product: React.FC<ProductComponent> = (props)=> {
+const Product: React.FC<ProductComponent> = (props) => {
   const { product, setIsLoading, wishList, setWishList } = props;
   const [isShowHart, setIsShowHart] = useState<boolean>(false);
   const navigate = useNavigatePage();
@@ -38,11 +38,11 @@ const Product: React.FC<ProductComponent> = (props)=> {
       setIsLoading(false);
     }
   };
-  const handleWishList = (e:React.MouseEvent<HTMLAnchorElement>, productId:string) => {
+  const handleWishList = (e: React.MouseEvent<HTMLAnchorElement>, productId: string) => {
     e.preventDefault();
-    const wishListStorage:Record<string,boolean> = JSON.parse(localStorage.getItem("wishList")||'{}') || {};
+    const wishListStorage: Record<string, boolean> = JSON.parse(localStorage.getItem("wishList") || '{}') || {};
     if (!wishListStorage[productId]) {
-      const newWishList:Record<string,boolean> = { ...wishListStorage, [productId]: true };
+      const newWishList: Record<string, boolean> = { ...wishListStorage, [productId]: true };
       localStorage.setItem("wishList", JSON.stringify(newWishList));
       updateToastInfo("已加入心願清單", "success", true);
       setIsShowHart(true);
@@ -52,7 +52,7 @@ const Product: React.FC<ProductComponent> = (props)=> {
       localStorage.setItem("wishList", JSON.stringify(newWishList));
       setIsShowHart(false);
       updateToastInfo("已從心願清單移除", "success", true);
-      setWishList((prev:string[]) =>
+      setWishList((prev: string[]) =>
         prev.filter((item) => {
           return newWishList[item];
         })
@@ -65,7 +65,7 @@ const Product: React.FC<ProductComponent> = (props)=> {
       //因為我在型別定義id可以是optional，所以會判斷有可能是undefined
       wishList.includes(product.id ?? "") && setIsShowHart(true);
     })();
-  }, [product.id,wishList]);
+  }, [product.id, wishList]);
 
   return (
     <>
@@ -85,9 +85,8 @@ const Product: React.FC<ProductComponent> = (props)=> {
             onClick={(e) => handleWishList(e, product.id as string)}
           >
             <i
-              className={`${
-                isShowHart ? "fas" : "far"
-              } fa-heart position-absolute`}
+              className={`${isShowHart ? "fas" : "far"
+                } fa-heart position-absolute`}
               style={{
                 right: "10%",
                 top: "10%",
