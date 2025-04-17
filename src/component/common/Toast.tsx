@@ -10,7 +10,7 @@ const ToastComponent = () => {
   // const toastSlice = useSelector((state) => {
   //   return state.toastAtStore.toastInfo;
   // });
-  const toastSlice = useSelector(toastData)
+  const toastSlice = useSelector(toastData);
   useEffect(() => {
     toastSlice.forEach((message) => {
       const toastElement = toastDivRef.current[message.id];
@@ -25,8 +25,8 @@ const ToastComponent = () => {
         }, VITE_TOAST_SHOWTIME);
       }
     });
-  }, [toastSlice,dispatch]);
-  const closeToast = (messageId:number) => {
+  }, [toastSlice, dispatch]);
+  const closeToast = (messageId: number) => {
     // dispatch(removeMessage(messageId));
     //2種做法
     // console.log("messageId:", messageId);
@@ -45,7 +45,7 @@ const ToastComponent = () => {
           role="alert"
           aria-live="assertive"
           aria-atomic="true"
-          ref={(el) => {toastDivRef.current[message.id] = el}}
+          ref={(el) => { toastDivRef.current[message.id] = el }}
         >
           <div className={`toast-body d-flex toast text-bg-${message.type}`}>
             <strong className="me-auto">

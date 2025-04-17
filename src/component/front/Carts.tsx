@@ -1,29 +1,27 @@
 
 import { apiService } from "../../apiService/apiService";
 const APIPath = import.meta.env.VITE_API_PATH;
-import { useDispatch } from "react-redux";
 import { useToast } from "../../hook";
 import { Cart } from '../../type/CartType';
-interface CartComponentProp{
-  cart:Cart, 
-  handleDeleteCart:(cartId: string | null) => Promise<void>, 
-  setIsLoading:React.Dispatch<React.SetStateAction<boolean>>, 
-  setReload:React.Dispatch<React.SetStateAction<boolean>>
+interface CartComponentProp {
+  cart: Cart,
+  handleDeleteCart: (cartId: string | null) => Promise<void>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setReload: React.Dispatch<React.SetStateAction<boolean>>
 }
-interface PutDataType{
-  data:{
+interface PutDataType {
+  data: {
     product_id: string,
     qty: number,
   }
 }
-const Carts= (props:CartComponentProp) => {
+const Carts = (props: CartComponentProp) => {
   const { cart, handleDeleteCart, setIsLoading, setReload } = props;
-  const dispatch = useDispatch();
   const updateToast = useToast();
-  const handleIncreDecreProduct = async (cartId:string, type:string) => {
+  const handleIncreDecreProduct = async (cartId: string, type: string) => {
     setIsLoading(true);
     try {
-      const putData :PutDataType = {
+      const putData: PutDataType = {
         data: {
           product_id: cart.product_id,
           qty: type === "+" ? cart.qty + 1 : cart.qty - 1,
@@ -32,25 +30,9 @@ const Carts= (props:CartComponentProp) => {
       await apiService.axiosPut(`/api/${APIPath}/cart/${cartId}`, putData);
       setReload(true);
       updateToast(`${type === "+" ? "增加商品數量完成" : "減少商品數量完成"}`, "light", true);
-      // dispatch(
-      //   setIsShowToastSlice({
-      //     type: "warning",
-      //     text: `${type === "+" ? "增加商品數量完成" : "減少商品數量完成"}`,
-      //     isShowToast: true,
-      //     id:Date.now()
-      //   })
-      // );
     } catch (error) {
       console.log(error);
       updateToast('數量變更失敗', "warning", true);
-      // dispatch(
-      //   setIsShowToastSlice({
-      //       type: "warning",
-      //       text: "數量變更失敗",
-      //       isShowToast: true,
-      //       id:Date.now()
-      //   })
-      // );
       alert(error);
     } finally {
       setIsLoading(false);
@@ -77,9 +59,8 @@ const Carts= (props:CartComponentProp) => {
         <div className="input-group">
           <div className="input-group-prepend">
             <button
-              className={`btn btn-outline-dark border-0 ${
-                cart.qty <= 1 ? "bg-secondary" : ""
-              }`}
+              className={`btn btn-outline-dark border-0 ${cart.qty <= 1 ? "bg-secondary" : ""
+                }`}
               disabled={cart.qty <= 1 && true}
               type="button"
               id="button-addon1"
